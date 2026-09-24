@@ -1,0 +1,3 @@
+// Local demonstration dataset only. Replace with verified serviceability data before launch.
+export const coverageAreas=[{pincode:'395001',areas:['Nanpura','Athwa Gate','Gopipura']},{pincode:'395007',areas:['Vesu','Piplod','City Light']},{pincode:'395009',areas:['Adajan','Pal','Rander']},{pincode:'395010',areas:['Parvat Patiya','Magob']},{pincode:'395017',areas:['Althan','Bhatar']}];
+export const isCovered=(pincode:string,locality:string)=>{const entry=coverageAreas.find(x=>x.pincode===pincode);if(!entry)return false;return !locality.trim()||entry.areas.some(a=>a.toLowerCase().includes(locality.trim().toLowerCase())||locality.trim().toLowerCase().includes(a.toLowerCase()))};

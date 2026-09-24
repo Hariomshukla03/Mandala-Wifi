@@ -1,0 +1,9 @@
+import {PageHero} from '@/components/shared/PageHero';
+import {EnquiryForm} from '@/components/forms/EnquiryForm';
+import {SectionHeading} from '@/components/shared/SectionHeading';
+import {coverageAreas} from '@/data/coverage';
+import {pageMetadata} from '@/lib/site';
+
+export const metadata=pageMetadata('Coverage in Surat','Explore Mandala Broadband coverage areas and request service in your locality.','/coverage');
+
+export default function Coverage(){return <><PageHero eyebrow="Coverage" title="Built for Surat. Expanding with purpose." copy="Explore our current coverage reference or request Mandala Broadband in your area."/><section className="section bg-white dark:bg-panel"><div className="container-x grid gap-12 lg:grid-cols-2"><div><SectionHeading eyebrow="Current data" title="Local coverage reference." copy="These areas are part of the local reference dataset and do not represent guaranteed live serviceability."/><div className="mt-8 space-y-3">{coverageAreas.map(area=><div className="card flex items-center justify-between p-5" key={area.pincode}><strong>{area.pincode}</strong><span className="muted text-sm">{area.areas.join(' · ')}</span></div>)}</div></div><div className="relative min-h-96 overflow-hidden rounded-3xl bg-ink"><div className="absolute inset-0 bg-grid bg-[size:36px_36px]"/><div className="absolute left-[22%] top-[30%] h-4 w-4 rounded-full bg-brand-cyan shadow-[0_0_35px_#35C8FF]"/><div className="absolute left-[54%] top-[48%] h-4 w-4 rounded-full bg-brand shadow-[0_0_35px_#1769FF]"/><div className="absolute right-[18%] top-[24%] h-4 w-4 rounded-full bg-brand-cyan shadow-[0_0_35px_#35C8FF]"/></div></div></section><section className="section"><div className="container-x"><SectionHeading eyebrow="Request Mandala Broadband" title="Tell us where you need a better connection."/><div className="mt-10"><EnquiryForm/></div></div></section></>}

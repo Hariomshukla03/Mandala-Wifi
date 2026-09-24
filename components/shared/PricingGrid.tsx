@@ -2,53 +2,49 @@
 
 import {useState} from 'react';
 import {motion} from 'framer-motion';
-import {Check} from 'lucide-react';
-import {plans} from '@/data/plans';
+import {Check, Gauge} from 'lucide-react';
+import {plans,type Plan} from '@/data/plans';
 import {Button} from './Button';
 
-type HomeBilling = '6 months' | '12 months';
-type BusinessBilling = 'monthly' | 'yearly';
+type Duration = '12 Months' | '18 Months' | '24 Months';
 
-export function PricingGrid({showAudience=true,defaultAudience='home'}:{showAudience?:boolean;defaultAudience?:'home'|'business'}) {
-  const [homeBilling,setHomeBilling] = useState<HomeBilling>('12 months');
-  const [businessBilling,setBusinessBilling] = useState<BusinessBilling>('monthly');
-  const [audience,setAudience] = useState<'home'|'business'>(defaultAudience);
-  const visible = plans.filter(plan => plan.audience === audience);
+const durationPrice: Record<Duration,keyof Pick<Plan,'twelveMonths'|'eighteenMonths'|'twentyFourMonths'>> = {
+  '12 Months':'twelveMonths',
+  '18 Months':'eighteenMonths',
+  '24 Months':'twentyFourMonths'
+};
+
+export function PricingGrid(_props:{showAudience?:boolean;defaultAudience?:'home'|'business'}={}) {
+  const [duration,setDuration] = useState<Duration>('12 Months');
+  const priceKey = durationPrice[duration];
 
   return <div>
     <div className="mb-10 flex flex-wrap items-center gap-3">
-      {showAudience && <Toggle values={['home','business']} active={audience} set={value=>setAudience(value as typeof audience)}/>}
-      {audience === 'home'
-        ? <Toggle values={['6 months','12 months']} active={homeBilling} set={value=>setHomeBilling(value as HomeBilling)}/>
-        : <Toggle values={['monthly','yearly']} active={businessBilling} set={value=>setBusinessBilling(value as BusinessBilling)}/>
-      }
-      {audience === 'home' && <span className="rounded-full bg-brand/10 px-3 py-1 text-xs font-bold text-brand">Unlimited plans</span>}
+      <Toggle values={['12 Months','18 Months','24 Months']} active={duration} set={value=>setDuration(value as Duration)}/>
+      <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-blue-700 dark:border-brand/30 dark:bg-brand/10 dark:text-brand-cyan">Unlimited plans</span>
     </div>
-    <div className={'grid gap-5 '+(visible.length===4?'lg:grid-cols-4':'md:grid-cols-2')}>
-      {visible.map((plan,index)=>{
-        const homePrice = homeBilling === '6 months' ? plan.sixMonths : plan.twelveMonths;
-        const businessPrice = businessBilling === 'monthly' ? plan.monthly : plan.yearly;
-        const price = audience === 'home' ? homePrice : businessPrice;
-        return <motion.article id={plan.id} layout key={plan.id} className={'card relative flex scroll-mt-28 flex-col p-6 '+(plan.popular?'border-brand shadow-glow':'')} initial={{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:index*.06}}>
-          {plan.popular && <span className="absolute right-5 top-5 rounded-full bg-brand px-3 py-1 text-[10px] font-extrabold tracking-wider text-white">MOST POPULAR</span>}
-          <p className="font-bold">{plan.name}</p>
-          <div className="mt-6"><span className="text-4xl font-extrabold">{plan.speed}</span><span className="muted ml-2">Mbps</span></div>
-          <p className="muted mt-4 min-h-14 text-sm">{plan.description}</p>
-          <div className="mt-6 min-h-10">
-            {price == null
-              ? <span className="text-lg font-extrabold text-slate-400">Not available</span>
-              : <><motion.span key={`${audience}-${homeBilling}-${businessBilling}-${plan.id}`} initial={{opacity:0,y:5}} animate={{opacity:1,y:0}} className="text-2xl font-extrabold">₹{price.toLocaleString('en-IN')}</motion.span><span className="muted text-sm"> / {audience === 'home' ? homeBilling : businessBilling === 'monthly' ? 'month' : 'year'}</span></>
-            }
+    <div className="grid gap-5 md:grid-cols-3">
+      {plans.map((plan,index)=>{
+        const price = plan[priceKey];
+        return <motion.article id={plan.id} layout key={plan.id} className="card relative flex scroll-mt-28 flex-col overflow-hidden p-7" initial={{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:index*.07}}>
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-800 via-brand to-brand-cyan"/>
+          <p className="font-extrabold text-blue-900 dark:text-white">{plan.name}</p>
+          <div className="mt-6"><span className="text-5xl font-extrabold tracking-tight text-brand">{plan.speed}</span><span className="muted ml-2 font-semibold">Mbps</span></div>
+          <p className="muted mt-4 min-h-16 text-sm leading-6">{plan.description}</p>
+          <div className="mt-6 rounded-2xl bg-blue-50 p-4 dark:bg-white/5">
+            <motion.span key={`${duration}-${plan.id}`} initial={{opacity:0,y:5}} animate={{opacity:1,y:0}} className="text-3xl font-extrabold text-blue-900 dark:text-white">₹{price.toLocaleString('en-IN')}</motion.span>
+            <span className="muted ml-1 text-sm"> / {duration.toLowerCase()}</span>
           </div>
-          <ul className="my-7 space-y-3 border-t border-slate-200 pt-6 text-sm dark:border-white/10">{plan.features.map(feature=><li key={feature} className="flex gap-2"><Check size={17} className="shrink-0 text-brand"/>{feature}</li>)}</ul>
-          <Button href={`/contact?plan=${plan.id}`} className={`mt-auto ${price == null?'pointer-events-none opacity-45':''}`}>{price == null ? 'Choose another duration' : `Choose ${plan.name}`}</Button>
+          <ul className="my-7 space-y-3 border-t border-blue-100 pt-6 text-sm dark:border-white/10">{plan.features.map(feature=><li key={feature} className="flex gap-2"><Check size={17} className="shrink-0 text-brand"/>{feature}</li>)}</ul>
+          <Button href={`/contact?plan=${plan.id}`} className="mt-auto">Choose {plan.speed} Mbps</Button>
         </motion.article>;
       })}
     </div>
+    <div className="mt-6 flex items-center gap-4 rounded-2xl border border-blue-200 bg-gradient-to-r from-blue-50 to-sky-50 p-5 text-blue-950 dark:border-brand/25 dark:from-brand/10 dark:to-brand-cyan/5 dark:text-white"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand text-white"><Gauge size={22}/></span><div><p className="font-extrabold">1000 Mbps plan also available</p><p className="mt-1 text-sm text-blue-700 dark:text-slate-300">Contact our team for pricing and availability.</p></div></div>
     <p className="muted mt-5 text-xs">GST, connection, equipment and optional static IP charges are additional. See the terms below for full details.</p>
   </div>;
 }
 
 function Toggle({values,active,set}:{values:string[];active:string;set:(value:string)=>void}) {
-  return <div className="inline-flex rounded-full border border-slate-200 bg-white p-1 dark:border-white/10 dark:bg-panel">{values.map(value=><button type="button" key={value} onClick={()=>set(value)} className={'rounded-full px-5 py-2 text-sm font-bold capitalize transition '+(active===value?'bg-brand text-white':'muted hover:text-brand')}>{value}</button>)}</div>;
+  return <div className="inline-flex flex-wrap rounded-full border border-blue-200 bg-white p-1 shadow-sm dark:border-white/10 dark:bg-panel">{values.map(value=><button type="button" key={value} onClick={()=>set(value)} className={'rounded-full px-5 py-2 text-sm font-extrabold transition '+(active===value?'bg-gradient-to-r from-blue-800 to-brand text-white shadow-md':'text-blue-700 hover:bg-blue-50 dark:text-slate-300 dark:hover:bg-white/5')}>{value}</button>)}</div>;
 }

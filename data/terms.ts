@@ -1,5 +1,6 @@
 export const contactPhoneDisplay = '9898955323';
 export const contactPhoneDial = '9898955323';
+export const contactEmail = 'mandalabroadband@gmail.com';
 export const businessAddress = '301, Tirupati Plaza, Bamroli - Vadod Road, Vadod Gam, Surat - 395 023';
 export const businessMapsUrl = 'https://www.google.com/maps/place/Mandala+Broadband/data=!4m2!3m1!1s0x0:0x6b431f0b64c8feca';
 export const businessMapEmbedUrl = 'https://www.openstreetmap.org/export/embed.html?bbox=72.8247%2C21.1265%2C72.8327%2C21.1325&layer=mapnik&marker=21.1295214%2C72.8286999';

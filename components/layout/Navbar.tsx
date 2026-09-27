@@ -15,7 +15,7 @@ export function Navbar(){
     <nav className="container-x flex h-20 items-center justify-between" aria-label="Primary navigation">
       <Link href="/" className="focus-ring flex items-center gap-3">
         <span className="relative h-14 w-14 shrink-0 overflow-hidden">
-          <Image src="/images/mandala-logo-transparent.png" alt="Mandala Broadband logo" width={90} height={90} priority className="absolute left-1/2 top-0 h-[90px] w-[90px] max-w-none -translate-x-1/2 object-contain brightness-0 dark:brightness-100"/>
+          <Image src="/images/mandala-logo-transparent.png" alt="Mandala Broadband logo" width={90} height={90} priority className="absolute left-1/2 top-0 h-[90px] w-[90px] max-w-none -translate-x-1/2 object-contain invert dark:invert-0"/>
         </span>
         <span className="leading-none">
           <strong className="block text-sm tracking-[.18em] sm:text-base">MANDALA</strong>

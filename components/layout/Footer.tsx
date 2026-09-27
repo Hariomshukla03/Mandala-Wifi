@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {ArrowUpRight} from 'lucide-react';
 import {ZifiFiberLine} from '@/components/brand/ZifiFiberLine';
-import {businessAddress,businessMapsUrl,contactPhoneDial,contactPhoneDisplay} from '@/data/terms';
+import {businessAddress,businessMapsUrl,contactEmail,contactPhoneDial,contactPhoneDisplay} from '@/data/terms';
 
 export function Footer(){
   return <footer className="relative overflow-hidden bg-night pt-20 text-white">
@@ -18,6 +18,7 @@ export function Footer(){
         <div>
           <p className="text-sm font-bold">Connect</p>
           <a className="mt-2 block text-sm text-slate-400 hover:text-white" href={`tel:${contactPhoneDial}`}>{contactPhoneDisplay}</a>
+          <a className="mt-2 block break-all text-sm text-slate-400 hover:text-white" href={`mailto:${contactEmail}`}>{contactEmail}</a>
           <address className="mt-4 text-sm not-italic leading-6 text-slate-400">{businessAddress}</address>
           <a href={businessMapsUrl} target="_blank" rel="noopener noreferrer" className="focus-ring mt-2 inline-flex items-center gap-1 text-sm font-semibold text-sky-300 hover:text-white">View on Google Maps <ArrowUpRight size={15}/></a>
           <p className="mt-4 text-xs leading-6 text-slate-500">Confirm plan pricing with us before making any payment.</p>

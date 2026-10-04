@@ -19,6 +19,10 @@ Set `VITE_SITE_URL` and the three EmailJS settings before running `npm run build
 
 For static hosting, upload `dist/`; no separate enquiry backend is needed. Direct visits to public routes need to serve their generated `index.html` files. Unknown paths should serve `404.html` with a 404 response.
 
+### Vercel
+
+`vercel.json` explicitly selects Vite, `npm ci`, `npm run build`, and the `dist` output directory. This overrides old Next.js framework/build/output settings after migration. Use the repository root as the project's Root Directory and Node.js 22.x. No Next.js runtime or Node server is required on Vercel. Set the public EmailJS variables and `VITE_SITE_URL` in Vercel before rebuilding; `.env.local` is intentionally not deployed.
+
 ## Structure
 
 - `src/pages/`: all page components

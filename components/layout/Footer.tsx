@@ -10,7 +10,14 @@ export function Footer(){
       <ZifiFiberLine className="mb-10 opacity-70"/>
       <div className="grid gap-12 border-b border-slate-300/60 pb-16 md:grid-cols-2 lg:grid-cols-4 dark:border-white/10">
         <div>
-          <Image src="/images/mandala-logo-transparent.png" alt="Mandala Broadband — The Trust of Customer" width={1314} height={1197} className="h-auto w-48 object-contain brightness-0 dark:brightness-100"/>
+          <Link href="/" aria-label="Mandala Broadband home" className="focus-ring inline-flex w-56 flex-col items-center text-center">
+            <span className="relative h-[110px] w-[180px] overflow-hidden">
+              <Image src="/images/mandala-logo-transparent.png" alt="Mandala Broadband logo" width={1314} height={1197} className="absolute left-0 top-0 h-auto w-[180px] max-w-none invert dark:invert-0"/>
+            </span>
+            <strong className="mt-1 block text-[34px] font-bold leading-tight tracking-[.02em]" style={{fontFamily:'Georgia, serif'}}>Mandal’s</strong>
+            <span aria-hidden="true" className="mb-1.5 mt-3 h-px w-full bg-blue-950/35 dark:bg-white/40"/>
+            <span className="text-[12px] font-extrabold uppercase tracking-[.025em] text-[#d99a00] dark:text-[#f4c542]">The Trust of Customer</span>
+          </Link>
           <p className="mt-5 max-w-xs text-sm leading-7 text-slate-600 dark:text-slate-400">Fast. Reliable. Connected. Built for the way Surat lives and works.</p>
         </div>
         <FooterGroup title="Explore" links={[["Plans","/plans"],["Services","/services"],["Coverage","/coverage"],["Business","/business-broadband"]]}/>

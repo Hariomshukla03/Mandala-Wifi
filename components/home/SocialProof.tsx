@@ -1,4 +1,5 @@
 import Image from '@/components/shared/Image';
+import {useState} from 'react';
 import {ArrowUpRight,MapPin,Star,Wifi} from 'lucide-react';
 import {businessAddress,businessMapEmbedUrl,businessMapsUrl} from '@/data/terms';
 
@@ -9,7 +10,7 @@ const clients = [
   'Rmix Concrete','Palloumi Builder','Swagat Builder',
 ];
 
-export function SocialProof(){return <section className="section overflow-hidden bg-[#eaf3ff] dark:bg-panel" aria-labelledby="clients-heading">
+export function SocialProof(){const[paused,setPaused]=useState(false);return <section className="section overflow-hidden bg-[#eaf3ff] dark:bg-panel" aria-labelledby="clients-heading">
   <div className="container-x">
     <div id="reviews-map" className="grid scroll-mt-28 gap-6 lg:grid-cols-[.9fr_1.1fr]">
       <div className="flex flex-col justify-between rounded-[2rem] border border-blue-200 bg-white p-7 shadow-[0_20px_60px_rgba(12,64,150,.08)] sm:p-10 dark:border-white/10 dark:bg-[#0b1b35]">
@@ -39,9 +40,10 @@ export function SocialProof(){return <section className="section overflow-hidden
     <div className="mt-24 max-w-3xl"><span className="eyebrow">Our clients</span><h2 id="clients-heading" className="mt-5 text-h2">Connected with businesses across Surat.</h2><p className="muted mt-5 text-lg leading-8">Trusted by teams across industries, from mills and logistics to builders and quick commerce.</p></div>
   </div>
 
-  <div className="client-marquees mt-10 space-y-4" aria-label="Our clients">
-    <ClientMarquee names={clients.slice(0,8)} direction="left"/>
-    <ClientMarquee names={clients.slice(8)} direction="right"/>
+  <div className="container-x mt-6"><button type="button" onClick={()=>setPaused(!paused)} aria-pressed={paused} className="focus-ring rounded-full border border-blue-200 px-4 py-2 text-xs font-semibold text-blue-800 dark:border-white/20 dark:text-sky-200">{paused?'Play client names':'Pause client names'}</button></div>
+  <div className="client-marquees mt-6 space-y-4" data-paused={paused} aria-label="Our clients">
+    <ClientMarquee names={clients.slice(0,8)} direction="right"/>
+    <ClientMarquee names={clients.slice(8)} direction="left"/>
   </div>
 
   <div className="container-x mt-16">

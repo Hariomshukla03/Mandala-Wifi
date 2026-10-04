@@ -18,10 +18,11 @@
 .dark .feature-card .muted{color:#d2e4f8}
 @keyframes client-slide-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes client-slide-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-.client-track-left{animation:client-slide-left 65s linear infinite}
-.client-track-right{animation:client-slide-right 70s linear infinite}
-.client-marquee:hover .client-track{animation-play-state:paused}
-@media(prefers-reduced-motion:reduce){.client-marquee{overflow:visible}.client-track{width:auto;flex-wrap:wrap;animation:none!important}.client-track [aria-hidden="true"]{display:none}}
+.client-track-left{animation:client-slide-left 45s linear infinite;will-change:transform}
+.client-track-right{animation:client-slide-right 50s linear infinite;will-change:transform}
+/* These explicitly requested animations have their own visible pause controls. */
+@media(prefers-reduced-motion:reduce){.client-track-left{animation:client-slide-left 45s linear infinite!important}.client-track-right{animation:client-slide-right 50s linear infinite!important}}
+.client-marquees[data-paused="true"] .client-track{animation-play-state:paused!important}
 /* Google Fonts: Manrope keeps UI copy readable; Space Grotesk gives headlines character. */
 body{font-family:var(--font-manrope),system-ui,sans-serif}
 h1,h2,h3{font-family:var(--font-space-grotesk),var(--font-manrope),system-ui,sans-serif}

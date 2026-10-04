@@ -1,2 +1,2 @@
-import Link from 'next/link';import {ZifiFiberLine} from '@/components/brand/ZifiFiberLine';
+import Link from '@/components/shared/Link';import {ZifiFiberLine} from '@/components/brand/ZifiFiberLine';
 export default function NotFound(){return <section className="flex min-h-screen items-center bg-night pt-20 text-white"><div className="container-x text-center"><p className="text-8xl font-extrabold text-brand">404</p><h1 className="mt-4 text-h1">This connection went somewhere else.</h1><p className="mx-auto mt-5 max-w-xl text-slate-400">The page you’re looking for doesn’t exist or has moved.</p><ZifiFiberLine className="mx-auto mt-8 max-w-3xl"/><Link href="/" className="mt-8 inline-flex rounded-full bg-brand px-6 py-3 font-bold">Back home</Link></div></section>}

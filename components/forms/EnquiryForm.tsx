@@ -1,9 +1,9 @@
-'use client';
 
 import {Formik,Form,Field,ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {useState,type ComponentType} from 'react';
 import {CheckCircle2,ChevronDown,Gauge,Hash,Mail,MapPin,MessageSquare,Phone,Send,UserRound,Wifi,type LucideProps} from 'lucide-react';
+import {sendEnquiry} from '@/lib/enquiry';
 
 const schema=Yup.object({
   name:Yup.string().min(2).max(60).required('Full name is required'),
@@ -18,7 +18,7 @@ const schema=Yup.object({
 const initial={name:'',mobile:'',email:'',area:'',pincode:'',service:'',plan:'',message:'',website:''};
 const control='focus-ring peer w-full rounded-2xl border border-slate-200 bg-slate-50/80 py-3.5 pl-11 pr-4 text-[15px] text-ink shadow-sm outline-none transition placeholder:text-slate-400 hover:border-blue-300 focus:border-brand focus:bg-white focus:shadow-[0_0_0_4px_rgba(23,105,255,.09)] dark:border-white/10 dark:bg-[#050D1A] dark:text-white dark:hover:border-brand-cyan/40 dark:focus:border-brand-cyan dark:focus:bg-[#071426]';
 
-export function EnquiryForm(){const[success,setSuccess]=useState(false);const[submitError,setSubmitError]=useState('');return <Formik initialValues={initial} validationSchema={schema} onSubmit={async(values,actions)=>{setSuccess(false);setSubmitError('');try{const response=await fetch('/api/enquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(values)});const result=await response.json() as {ok?:boolean;error?:string};if(!response.ok||!result.ok)throw new Error(result.error||'Unable to send your enquiry.');actions.resetForm();setSuccess(true)}catch(error){setSubmitError(error instanceof Error?error.message:'Unable to send your enquiry. Please try again.')}finally{actions.setSubmitting(false)}}}>{({isSubmitting})=><Form className="relative overflow-hidden rounded-[2rem] border border-blue-200/70 bg-white/95 p-5 text-ink shadow-[0_28px_90px_rgba(11,59,145,.12)] backdrop-blur sm:p-8 lg:p-10 dark:border-brand-cyan/20 dark:bg-gradient-to-br dark:from-[#09182c]/95 dark:to-[#06101f]/95 dark:text-white dark:shadow-[0_30px_100px_rgba(0,0,0,.3)]">
+export function EnquiryForm(){const[success,setSuccess]=useState(false);const[submitError,setSubmitError]=useState('');return <Formik initialValues={initial} validationSchema={schema} onSubmit={async(values,actions)=>{setSuccess(false);setSubmitError('');try{await sendEnquiry(values);actions.resetForm();setSuccess(true)}catch(error){setSubmitError(error instanceof Error?error.message:'Unable to send your enquiry. Please try again.')}finally{actions.setSubmitting(false)}}}>{({isSubmitting})=><Form className="relative overflow-hidden rounded-[2rem] border border-blue-200/70 bg-white/95 p-5 text-ink shadow-[0_28px_90px_rgba(11,59,145,.12)] backdrop-blur sm:p-8 lg:p-10 dark:border-brand-cyan/20 dark:bg-gradient-to-br dark:from-[#09182c]/95 dark:to-[#06101f]/95 dark:text-white dark:shadow-[0_30px_100px_rgba(0,0,0,.3)]">
   <Field name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" className="pointer-events-none absolute -left-[9999px] h-px w-px opacity-0"/>
   <div aria-hidden="true" className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-sky-300/15 blur-3xl dark:bg-brand/15"/>
   <div className="relative mb-8 flex flex-col gap-3 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between dark:border-white/10"><div><p className="text-xs font-extrabold uppercase tracking-[.16em] text-brand dark:text-brand-cyan">Connection request</p><h3 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Tell us where to reach you.</h3></div><p className="max-w-xs text-sm leading-6 text-slate-500 dark:text-slate-400">Required fields are marked with an asterisk.</p></div>

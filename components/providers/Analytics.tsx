@@ -1,2 +1,2 @@
-// Analytics is intentionally off unless NEXT_PUBLIC_ANALYTICS_ID is configured.
-export function Analytics(){const id=process.env.NEXT_PUBLIC_ANALYTICS_ID;if(!id)return null;return <script async data-domain={id} src="https://plausible.io/js/script.js"/>}
+import {useEffect} from 'react';
+export function Analytics(){useEffect(()=>{const id=import.meta.env.VITE_ANALYTICS_ID;if(!id)return;const script=document.createElement('script');script.async=true;script.dataset.domain=id;script.src='https://plausible.io/js/script.js';document.head.appendChild(script);return()=>script.remove()},[]);return null}

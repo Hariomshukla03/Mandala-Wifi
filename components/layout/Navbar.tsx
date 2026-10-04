@@ -1,7 +1,6 @@
-'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from '@/components/shared/Image';
+import Link from '@/components/shared/Link';
 import {useState} from 'react';
 import {Menu,X,Moon,Sun} from 'lucide-react';
 import {useTheme} from '@/components/providers/ThemeProvider';

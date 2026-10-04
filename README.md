@@ -1,26 +1,37 @@
-# Mandala-Wifi
+# Mandala Broadband
 
-Production-oriented marketing website for Mandala Broadband, a fiber internet provider in Surat.
+React + Vite website for Mandala Broadband in Surat. The frontend uses React Router, TypeScript, Tailwind CSS, Framer Motion and Lucide icons. Enquiries are sent using EmailJS directly from the browser. No Next.js runtime or dependency is used.
 
-## Run locally
+## Development
 
-```bash
-npm install
-npm run dev
-```
+Use Node.js 22.12 or newer. Run `npm install`, then `npm run dev`.
 
-## Before launch
+- Website: http://localhost:3000
+- `npm run typecheck` checks frontend and server TypeScript.
 
-- Replace all `.example` contact details and `https://mandalabroadband.example`.
-- Replace placeholder metrics, testimonials and local coverage data with verified business data.
-- Add a compressed H.264 hero video at `public/videos/hero.mp4` if desired; the generated poster is the intentional fallback.
-- Review the privacy policy and terms with qualified legal counsel.
-- Confirm plan prices, taxes, installation, router and static-IP terms.
-- Configure `NEXT_PUBLIC_ANALYTICS_ID` only after consent/privacy review.
-- Configure Nodemailer with `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM_EMAIL`, and `ENQUIRY_TO_EMAIL`. The authenticated mailbox is the sender; a visitor-provided email is safely used as `Reply-To`, so replying from your inbox goes to the lead. The form reports success only after SMTP accepts the email.
+Configure `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID` and `VITE_EMAILJS_PUBLIC_KEY` in `.env.local`. See [EmailJS setup](docs/emailjs-setup.md) for the exact template settings. Restart Vite after changing environment variables. Old SMTP settings are no longer used. Success means EmailJS accepted the request, not guaranteed inbox delivery.
 
-## Generated visual
+All `VITE_` variables are public frontend configuration. EmailJS's public key is intended for browser use. Never add passwords or private API keys. `VITE_SITE_URL` sets your domain and optional `VITE_ANALYTICS_ID` enables Plausible. Analytics is disabled by default.
 
-`public/images/hero-poster.png` was generated for this project using the built-in image generation tool. Prompt direction: premium wide Surat-inspired night cityscape, electric-blue fiber paths, deep navy palette, copy-safe space, no text or logos.
+## Production
 
-`public/videos/hero.mp4` is an optimized local background loop derived from [this free Pexels network clip](https://www.pexels.com/video/futuristic-glowing-blue-network-grid-visualization-34162507/) by Nicola Narracci. It is muted, lazy-loaded, paused off-screen and replaced by the poster when reduced motion or reduced data is requested.
+Set `VITE_SITE_URL` and the three EmailJS settings before running `npm run build`. This produces `dist/` with HTML for all ten public routes, route-specific metadata, a sitemap, robots.txt, assets and a 404 page. The build also checks TypeScript. `npm start` optionally serves the static website on port 3000. Set `PORT` and `HOST` for your host as needed. HTTPS should be provided by your hosting platform or reverse proxy.
+
+For static hosting, upload `dist/`; no separate enquiry backend is needed. Direct visits to public routes need to serve their generated `index.html` files. Unknown paths should serve `404.html` with a 404 response.
+
+## Structure
+
+- `src/pages/`: all page components
+- `src/App.tsx`, `src/routes.tsx`: shared layout and React Router routes
+- `src/styles.css`: theme, animations and global styles
+- `components/`, `data/`, `lib/`: reusable UI and business content
+- `lib/enquiry.ts`: EmailJS submission and error handling
+- `server/`: optional production static server
+- `scripts/prerender.mjs`: static HTML and search metadata generation
+- `public/`: logo, router photos, video and other assets
+
+## Content before launch
+
+Confirm the production domain, plan prices, taxes, equipment costs and coverage. Have the business approve customer and success-rate claims, privacy text and terms. The 1000 Mbps plan remains an enquiry-only offering. UPI payment collection has not been implemented.
+
+The hero and router images are generated concept visuals. The muted background video is derived from [Nicola Narracci’s Pexels network clip](https://www.pexels.com/video/futuristic-glowing-blue-network-grid-visualization-34162507/). Reduced motion/data preferences disable video, and video pauses off-screen.
